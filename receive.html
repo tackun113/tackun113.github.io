@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receive</title>
+</head>
+<body>
+    <video id="me" width="50%"></video>
+    <video id="guest" width="50%"></video>
+
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.0.0/dist/peerjs.min.js"></script>
+    <script>
+        var peer = new Peer();
+        navigator.getUserMedia = navigator.getUserMedia ||
+                         navigator.webkitGetUserMedia ||
+                         navigator.mozGetUserMedia;
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia({ audio: false, video: { width: 1280/3, height: 720/3 } },
+                function(stream) {
+                    var call = peer.call("sdasdsda", stream);
+
+                        call.on('stream', function(streams) {
+                        var video = document.getElementById("guest")
+                        video.srcObject = streams;
+                        video.onloadedmetadata = function(e){
+                            video.play();
+                        }
+                    });
+                    var video = document.getElementById('me');
+                    video.srcObject = stream;
+                    video.onloadedmetadata = function(e) {
+                    video.play();
+                    };
+                },
+                function(err) {
+                    console.log("The following error occurred: " + err.name);
+                }
+            );
+            } else {
+            console.log("getUserMedia not supported");
+            }
+    </script>
+</body>
+</html>
