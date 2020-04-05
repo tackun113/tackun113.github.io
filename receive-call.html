@@ -41,11 +41,7 @@
         id = parseURLParams(window.location.href).id[0];
         callto = parseURLParams(window.location.href).callto[0];
         
-        var peer = new Peer(id,{
-                secure: true, 
-                host: 'peerjs241.herokuapp.com', 
-                port: 443,
-        });
+        var peer = new Peer(id);
         
         openStream = new Promise(function(resolve, reject){
             navigator.getUserMedia = navigator.getUserMedia ||
