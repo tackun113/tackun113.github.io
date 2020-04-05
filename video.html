@@ -42,11 +42,7 @@
         id = parseURLParams(window.location.href).id[0];
         callto = parseURLParams(window.location.href).callto[0];
         
-        var peer = new Peer(id,{
-                secure: true, 
-                host: 'peerjs241.herokuapp.com', 
-                port: 443,
-        });
+        var peer = new Peer(id);
         peer.on("open", function(id){
             conn = peer.connect(callto);
             openStream.then(function(result){
