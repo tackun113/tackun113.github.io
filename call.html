@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./src/css/call.css"/>
+    <title>Call</title>
+</head>
+<body>
+    <div class="container centerVH">
+        <div class="login">
+            <div class="center">
+                <h2>Connecting...</h2>
+                <form class="" id="login-form">
+                    <label for="inputID">ID address</label>
+                        <div class="d-flex">
+                            <input type="text" class="form-control" id="inputID" aria-describedby="ID" placeholder="Enter ID">
+                            <button type="submit" class="btn btn-primary">Call</button>
+                        </div>
+                    <small id="ID" class="form-text text-muted">We'll never share ID with anyone else.</small>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="./src/js/jquery-3.4.1.min.js"></script>
+    <script src="./src/js/peerjs.js"></script>
+    <script>
+        var myID;
+        var myWindow1;
+        var myWindow1;
+        var peer = new Peer(null, {
+                secure: true, 
+                host: 'peerjs241.herokuapp.com', 
+                port: 443,
+    });
+        peer.on("open",function(id){
+            $("h2").text("Your ID: "+id)
+            myID = id;
+        })
+        peer.on("close", function(){
+            console.log("close");
+        })
+        $("#login-form").submit(function(e){
+            e.preventDefault()
+            myWindow1 = window.open("video.html?id="+myID+"&callto="+$("#inputID").val(), "VideoCall", "width="+screen.availWidth+",height="+screen.availHeight);
+            peer.disconnect();
+            myWindow1.onbeforeunload = function () {
+                peer.reconnect();
+            }
+        })
+        peer.on("connection", function(conn){
+            conn.on('open', function() {
+            conn.on('data', function(data) {    
+                    myWindow1 = window.open("receive-call.html?id="+myID+"&callto="+data, "VideoCall", "width="+screen.availWidth+",height="+screen.availHeight);
+                    peer.disconnect();
+                    myWindow1.onbeforeunload = function () {
+                        peer.reconnect();
+                    
+                }
+            });
+        })
+    })
+    </script>
+</body>
+</html>
