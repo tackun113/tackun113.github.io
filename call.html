@@ -29,11 +29,7 @@
         var myID;
         var myWindow1;
         var myWindow1;
-        var peer = new Peer(null, {
-                secure: true, 
-                host: 'peerjs241.herokuapp.com', 
-                port: 443,
-    });
+        var peer = new Peer(null);
         peer.on("open",function(id){
             $("h2").text("Your ID: "+id)
             myID = id;
